@@ -399,6 +399,13 @@ body:has(#offres:target) .nav-links a[href="#offres"] {
   border-color: #f6bacf;
 }
 
+@media (min-width: 761px) {
+  .gta-return {
+    /* Clear the cover’s maximum left shift (21% of 292px). */
+    right: calc(100% + 74px);
+  }
+}
+
 .gta-return:hover span {
   transform: translateY(-3px);
 }
