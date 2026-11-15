@@ -5,8 +5,101 @@ const gift = document.getElementById("ps5");
 const page = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+const themeAudio = document.getElementById("theme-audio");
+const themeToggle = document.querySelector(".theme-toggle");
+const themePlayer = document.querySelector(".theme-player");
+const themeSelect = document.getElementById("theme-track");
+const themeMute = document.querySelector(".theme-mute");
+const themeVolume = document.getElementById("theme-volume");
+const themeVolumeValue = document.getElementById("theme-volume-value");
+const themeStatus = document.querySelector(".theme-status");
+const themeTracks = [
+  "assets/gta-theme.mp3",
+  "assets/gta-iv-theme.mp3",
+  "assets/gta-san-andreas-theme.mp3",
+];
+let themeTrackIndex = 0;
+let themeEnabled = true;
+themeAudio.src = themeTracks[themeTrackIndex];
+themeAudio.volume = 0.25;
+themePlayer.hidden = false;
+
+function syncThemeToggle() {
+  themeToggle.textContent = themeAudio.paused ? "Lecture" : "Pause";
+}
+
+function playTheme() {
+  themeStatus.textContent = "";
+  themeAudio.play().catch((error) => {
+    if (error.name === "AbortError") return;
+    syncThemeToggle();
+    themeStatus.textContent = themeAudio.error
+      ? "Musique indisponible. Essayez un autre thème."
+      : "Appuyez sur Lecture pour lancer la musique.";
+  });
+}
+
+themeAudio.addEventListener("play", syncThemeToggle);
+themeAudio.addEventListener("pause", syncThemeToggle);
+themeAudio.addEventListener("ended", () => {
+  themeTrackIndex = (themeTrackIndex + 1) % themeTracks.length;
+  themeSelect.value = String(themeTrackIndex);
+  themeAudio.src = themeTracks[themeTrackIndex];
+  if (themeEnabled) playTheme();
+});
+themeAudio.addEventListener("error", () => {
+  syncThemeToggle();
+  themeStatus.textContent = "Musique indisponible. Essayez un autre thème.";
+});
+
+themeToggle.addEventListener("click", () => {
+  themeEnabled = themeAudio.paused;
+  if (themeEnabled) {
+    playTheme();
+  } else {
+    themeAudio.pause();
+  }
+});
+
+themeSelect.addEventListener("change", () => {
+  const wasPlaying = !themeAudio.paused;
+  themeTrackIndex = Number(themeSelect.value);
+  themeAudio.src = themeTracks[themeTrackIndex];
+  themeStatus.textContent = "";
+  syncThemeToggle();
+  if (wasPlaying) playTheme();
+});
+
+function syncThemeVolume() {
+  const silent = themeAudio.muted || themeAudio.volume === 0;
+  themeMute.setAttribute("aria-pressed", String(silent));
+  themeMute.textContent = silent ? "Activer le son" : "Couper le son";
+  themeVolumeValue.textContent = `${Math.round(themeAudio.volume * 100)} %`;
+}
+
+themeMute.addEventListener("click", () => {
+  if (themeAudio.muted || themeAudio.volume === 0) {
+    themeAudio.muted = false;
+    if (themeAudio.volume === 0) {
+      themeAudio.volume = 0.25;
+      themeVolume.value = "25";
+    }
+  } else {
+    themeAudio.muted = true;
+  }
+  syncThemeVolume();
+});
+
+themeVolume.addEventListener("input", () => {
+  themeAudio.volume = Number(themeVolume.value) / 100;
+  themeAudio.muted = false;
+  syncThemeVolume();
+});
+themeAudio.addEventListener("volumechange", syncThemeVolume);
+
 discover.addEventListener("click", (event) => {
   if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (themeEnabled && themeAudio.paused && !themeAudio.error) playTheme();
   if (reducedMotion.matches || !CSS.supports("mask-image", "radial-gradient(transparent, black)")) return;
 
   event.preventDefault();

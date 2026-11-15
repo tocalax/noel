@@ -132,5 +132,27 @@
     </form>
     <img alt="">
   </dialog>
+  <details class="theme-player" hidden>
+    <summary>♫ Musique</summary>
+    <div class="theme-panel">
+      <label for="theme-track">Musique de fond</label>
+      <select id="theme-track">
+        <option value="0">GTA V · Welcome to Los Santos</option>
+        <option value="1">GTA IV · Theme Song</option>
+        <option value="2">GTA San Andreas · Official Theme</option>
+      </select>
+      <div class="theme-actions">
+        <button class="theme-toggle" type="button">Lecture</button>
+        <button class="theme-mute" type="button" aria-pressed="false">Couper le son</button>
+      </div>
+      <div class="theme-volume-label">
+        <label for="theme-volume">Volume</label>
+        <output id="theme-volume-value" for="theme-volume">25 %</output>
+      </div>
+      <input id="theme-volume" type="range" min="0" max="100" value="25" step="1">
+      <p class="theme-status" role="status"></p>
+    </div>
+  </details>
+  <audio id="theme-audio" preload="none"></audio>
 </body>
 </html>

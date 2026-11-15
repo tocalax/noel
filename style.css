@@ -133,6 +133,91 @@ h1, h2, p, figure {
   color: var(--ink);
 }
 
+.theme-player {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 12;
+  max-width: calc(100vw - 32px);
+  font-size: 13px;
+}
+
+.theme-player summary {
+  width: fit-content;
+  margin-left: auto;
+  min-height: 44px;
+  padding: 11px 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 24px;
+  background: var(--page);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.theme-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: min(320px, calc(100vw - 32px));
+  padding: 18px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: var(--page);
+  box-shadow: 0 12px 40px #0006;
+  max-height: calc(100dvh - 90px);
+  overflow-y: auto;
+}
+
+.theme-panel select, .theme-actions button {
+  min-height: 44px;
+  border: 1px solid var(--stroke);
+  border-radius: 6px;
+  background: #19283d;
+  color: var(--ink);
+  font: inherit;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.theme-panel select {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.theme-actions, .theme-volume-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.theme-actions button:first-child {
+  flex: 1;
+  color: var(--blue);
+}
+
+#theme-volume {
+  width: 100%;
+  margin: 0;
+  min-height: 36px;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.theme-status {
+  color: var(--soft);
+  font-size: 12px;
+}
+
+.theme-actions button:hover, .theme-player summary:hover {
+  border-color: var(--soft);
+}
+
+.theme-player :focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+
 .portal-transition {
   position: fixed;
   inset: 0;
