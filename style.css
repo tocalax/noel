@@ -432,6 +432,14 @@ body:has(#offres:target) .nav-links a[href="#offres"] {
   color: #f6bacf;
 }
 
+.gta-tagline {
+  display: inline-block;
+  color: #dbbed3;
+  font-size: .5em;
+  letter-spacing: normal;
+  line-height: 1.1;
+}
+
 .gta-details .text-link {
   color: #ffdce9;
 }
